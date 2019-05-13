@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# by signal file from sondemod triggered almanach download daemon
+# start in sondemod work dir
+
+ALMFN="e.txt"
+SIGFN="getalmanach"
+TEMP="/tmp";
+
+while true; do
+  if [ -e $SIGFN ] ; then
+    DAY=`date -u +%j`
+    YEAR=`date -u +%y`
+    echo day:$DAY year:$YEAR
+    FN=brdc`echo -n $DAY`0.`echo -n $YEAR`n
+    PD=$PWD
+    cd $TEMP
+#    wget http://qz-vision.jaxa.jp/USE/archives/ephemeris//20$YEAR/$FN
+#
+#    if [ -s $TEMP/$FN ] ; then
+#      echo jaxa ok
+#    else
+      wget ftp://alt.ngs.noaa.gov/cors/rinex/20$YEAR/$DAY/$FN.gz
+      if [ -s $TEMP/$FN.gz ] ; then
+        echo noaa ok
+        gunzip $TEMP/$FN.gz
+      fi
+#    fi
+
+    cd $PD 
+
+    if [ -s $TEMP/$FN ] ; then
+      mv $TEMP/$FN $TEMP/$ALMFN
+      rm -f $SIGFN
+      if [ -e $SIGFN ] ; then
+        echo getalmanach file not deletable
+        exit
+      fi
+      sleep 1800
+    else 
+      echo download failed
+      sleep 300
+    fi
+  else
+    sleep 10
+  fi 
+done
+# if [ -e $TEMP/$ALMFN ] ; then
+# FILESIZE=`wc -c /tmp/e.txt | awk '{print $1}'`
+# if [ $FILESIZE -lt 500000 ] ; then
+# rm $TEMP/$ALMFN
+# fi
+# fi
