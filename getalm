@@ -14,7 +14,7 @@ TEMP="/tmp";
     cd $TEMP
     rm -f $TEMP/$FN
 
-    wget ftp://www.ngs.noaa.gov/cors/rinex/20$YEAR/$DAY/$FN.gz
+    wget https://geodesy.noaa.gov/corsdata/cors/rinex/20$YEAR/$DAY/$FN.gz
 #    wget ftp://alt.ngs.noaa.gov/cors/rinex/20$YEAR/$DAY/$FN.gz
     if [ -s $TEMP/$FN.gz ] ; then
       echo noaa ok
