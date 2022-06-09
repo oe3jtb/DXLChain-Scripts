@@ -20,7 +20,7 @@ while true; do
 #    if [ -s $TEMP/$FN ] ; then
 #      echo jaxa ok
 #    else
-      wget https://www.ngs.noaa.gov/cors/rinex/20$YEAR/$DAY/$FN.gz
+      wget https://geodesy.noaa.gov/corsdata/rinex/20$YEAR/$DAY/$FN.gz
       if [ -s $TEMP/$FN.gz ] ; then
         echo noaa ok
         gunzip $TEMP/$FN.gz
